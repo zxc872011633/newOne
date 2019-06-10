@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.DemandsMapper">
+
+    <resultMap id="Demands" type="com.pojo.Demands">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="create_time" column="create_time"/>
+        <result property="creator" column="creator"/>
+    </resultMap>
+
+    <!--添加需求-->
+    <insert id="addDemands">
+          INSERT INTO demands (name,content,create_time,creator)  VALUE (#{Pojo.name},#{Pojo.content},#{creat_time},#{Pojo.creator})
+    </insert>
+
+    <!--单个删除需求-->
+    <delete id="delDemands">
+         DELETE FROM demands WHERE id = #{Pojo.id};
+    </delete>
+
+    <!--批量删除需求-->
+    <delete id="dmDemands">
+        DELETE FROM demands where id = #{Array}
+    </delete>
+
+    <!--修改需求-->
+    <update id="updateDemands">
+        UPDATE demands
+        SET name = #{Pojo.name},content = #{Pojo.content}
+        WHERE id = #{Pojo.id};
+    </update>
+
+    <!--查询所有需求-->
+    <select id="searchDemands" resultMap="Demands">
+        SELECT * from demands
+    </select>
+
+    <!--每页分配数据查询-->
+    <select id="getDemandsPaging" resultMap="Demands">
+        SELECT * FROM demands LIMIT #{Pojo.pageStart},#{Pojo.entry}
+    </select>
+
+    <!-- 植入任务模块-->
+    <select id="getOneDemands" resultMap="Demands">
+            select * from demands where id = #{DemandsId}
+    </select>
+</mapper>

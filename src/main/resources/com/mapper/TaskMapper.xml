@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TaskMapper">
+    <resultMap id="Task" type="com.pojo.Task">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="create_time" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="executor" column="executor"/>
+        <result property="start_time" column="start_time"/>
+        <result property="finish_time" column="finish_time"/>
+        <result property="state" column="state"/>
+    </resultMap>
+
+    <!--分配任务-->
+    <!--    INSERT INTO task (name,content,create_time,creator,executor,start_time,finish_time)  VALUE ('保洁','打扫卫生','2019-05-14 10:02:38',1,1,'2019-05-14 10:02:38','2019-05-14 10:30:38')-->
+    <insert id="assTask" >
+        INSERT INTO task (name,content,create_time,creator,executor,start_time)
+        VALUE (#{Pojo.name},#{Pojo.content},#{Pojo.create_time},#{Pojo.creator},#{Pojo.executor},#{startTime})
+    </insert>
+
+    <!--写入完成任务时间-->
+    <update id="finishTask">
+        update task set finish_time = #{finish_time} , state = 1 where id = #{Pojo.id}
+    </update>
+
+    <!--删除任务-->
+    <delete id="delTask">
+        delete from task where id = #{Pojo.id}
+    </delete>
+
+    <!--修改任务-->
+<!--    UPDATE task SET name = #{Pojo.name}, content = #{Pojo.content} , state = #{Pojo.state} WHERE id = #{Pojo.id};-->
+    <update id="updateTask">
+         UPDATE task SET name = #{Pojo.name}, content = #{Pojo.content}  WHERE id = #{Pojo.id};
+    </update>
+
+    <!--查询个人任务-->
+    <select id="findOneTask" resultMap="Task">
+        select * from task where executor = #{Pojo.executor}
+    </select>
+
+    <!--查询任务(全部)-->
+    <select id="searchTask" resultMap="Task">
+        select * from task
+    </select>
+
+    <!--任务分页-->
+    <select id="getTaskPaging" resultMap="Task">
+        SELECT * FROM task LIMIT #{Pojo.pageStart},#{Pojo.entry}
+    </select>
+
+
+    <!--查询任务(根据id)-->
+    <select id="findTaskById" resultMap="Task">
+        select * from task where id= #{Pojo.id}
+    </select>
+
+    <insert id="putIntoDemands">
+        INSERT INTO demands (name,content,create_time,creator)  VALUE (#{Pojo.name},#{Pojo.content},#{Create_time},#{Pojo.creator})
+    </insert>
+
+
+</mapper>

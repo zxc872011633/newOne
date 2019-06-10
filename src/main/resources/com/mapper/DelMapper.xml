@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.DelMapper">
+
+    <resultMap id="deleteLog" type="com.mapper.DelMapper">
+        <result property="id" column="id"/>
+        <result property="username" column="data"/>
+        <result property="password" column="msg"/>
+    </resultMap>
+
+    <insert id="insertIntoDatabase" >
+         INSERT INTO deleteLog (data,msg)  VALUE (#{delid},#{info});
+    </insert>
+</mapper>

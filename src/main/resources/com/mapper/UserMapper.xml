@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserMapper">
+    <resultMap id="user" type="com.pojo.User">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="create_time" column="create_time"/>
+        <result property="state" column="state"/>
+    </resultMap>
+
+    <resultMap id="deleteLog" type="com.pojo.deleteLog">
+        <result property="id" column="id"/>
+        <result property="username" column="data"/>
+        <result property="password" column="msg"/>
+    </resultMap>
+
+
+    <!--判断登陆-->
+    <!--  resultMap =  (对应的是  resultMap 的id)-->
+    <select id="search" resultMap="user">
+        SELECT * FROM user where username = #{Pojo.username} and password = #{Pojo.password};
+        <!--  SELECT * FROM user where  username = #{Pojo.username} and  password = #{Pojo.password}-->
+        <!-- <include refid="select"/>-->
+    </select>
+
+    <!-- 查询用户名是否存在-->
+    <select id="QueriesAlreadyExist" resultMap="user">
+        SELECT * FROM user where username = #{Pojo.username};
+    </select>
+
+    <!--查询所有用户-->
+    <select id="searchAllUser" resultMap="user">
+        select * from user
+    </select>
+
+    <!--注册-->
+    <insert id="insert">
+          INSERT INTO user (username,password,name,create_time)  VALUE (#{Pojo.username} ,#{Pojo.password},#{Pojo.name},#{creat_time})
+    </insert>
+
+    <!--修改用户状态-->
+    <update id="changeState">
+         UPDATE user SET state = #{Pojo.state} WHERE id = #{Pojo.id};
+    </update>
+
+    <!--让当前登陆的用户下线-->
+    <update id="rebootOneUser">
+        update user set state = 0 where id = #{Pojo.id}
+    </update>
+
+    <!--让所有用户下线-->
+    <update id="rebootAll">
+        update user set state = 0
+    </update>
+
+    <!--需求模块-->
+    <delete id="delete">
+        DELETE FROM user WHERE id = #{delteDemo.id};
+        <!-- 井号里面是传递的参数, "myid" 对应Param("myid") 在UserMapper里,后面的int myid 是具体值("由UserService传值")-->
+    </delete>
+
+    <update id="update">
+        UPDATE user
+        SET username = 'mine'
+        WHERE id = '2';
+    </update>
+
+    <sql id="select">
+        <where>
+            <if test="Pojo.id!=null">AND `id`LIKE #{Pojo.id}</if>
+            <if test="Pojo.username!=null">AND `username`LIKE #{Pojo.username}</if>
+            <if test="Pojo.password!=null">AND `password`LIKE #{Pojo.password}</if>
+        </where>
+    </sql>
+</mapper>
